@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: credit-report
+
+  datasource:
+    url: jdbc:h2:mem:creditdb;DB_CLOSE_DELAY=-1;MODE=MySQL
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    defer-datasource-initialization: true   # 엔티티로 테이블 생성 후 data.sql 시드 실행
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  sql:
+    init:
+      mode: always   # data.sql 시드 항상 적용
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+server:
+  port: 8080
