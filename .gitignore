@@ -1,0 +1,37 @@
+# dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# next.js
+.next/
+out/
+build/
+dist/
+
+# production
+*.tsbuildinfo
+next-env.d.ts
+
+# java / spring / gradle
+target/
+.gradle/
+!gradle/wrapper/gradle-wrapper.jar
+*.class
+*.log
+
+# env / secrets
+.env
+.env*.local
+.env.production
+*.pem
+*.key
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
