@@ -28,3 +28,27 @@ spring:
 
 server:
   port: 8080
+
+# =============================================================================
+# JWT / 인증 설정 (설계서 §5, API 명세서 §4)
+#  - secret : HMAC-SHA256 서명 키. 아래는 "커밋용 더미"이며 실제 운영키가 아니다.
+#             운영 환경에서는 반드시 환경변수 JWT_SECRET 으로 주입(오버라이드)한다.
+#             (HS256 안전성 요건상 최소 256bit/32바이트 이상 — 더미도 충분히 길게 둠)
+#  - access-exp-ms  : Access Token 만료 15분 (900,000ms) — 명세 expiresIn=900s
+#  - refresh-exp-ms : Refresh Token 만료 7일 (604,800,000ms) — 쿠키 Max-Age=604800s
+#  - cookie.secure  : 운영 HTTPS 전제(true). 로컬 http 개발 시 환경변수로 false 가능.
+# =============================================================================
+jwt:
+  secret: ${JWT_SECRET:kcs-credit-report-local-dev-dummy-secret-key-do-not-use-in-production-0123456789}
+  access-exp-ms: ${JWT_ACCESS_EXP:900000}
+  refresh-exp-ms: ${JWT_REFRESH_EXP:604800000}
+
+# 인증 쿠키(Refresh) 속성 — API 명세서 §4.2
+auth:
+  cookie:
+    name: refreshToken
+    path: /api/auth          # 일반 API 요청에는 쿠키 미동봉(범위 제한)
+    secure: ${COOKIE_SECURE:true}   # HTTPS 전송 한정. 로컬 http 테스트 시 false 오버라이드
+    same-site: Strict        # CSRF 표면 축소
+  cors:
+    allowed-origin: ${CORS_ALLOWED_ORIGIN:http://localhost:3000}
