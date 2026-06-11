@@ -9,10 +9,14 @@
 -- -----------------------------------------------------------------------------
 -- 테스트 계정 (id = 1)
 --   email    : test@kcs.com
---   password : 'Test1234!' 의 BCrypt 해시 (평문 저장 금지)
+--   password : 'Test1234!' 의 BCrypt($2a$, strength=10) 해시 (평문 저장 금지)
+--   ※ Spring Security 6.4.5 BCryptPasswordEncoder 로 생성·검증 완료.
+--     enc.matches("Test1234!", <아래 해시>) == true (60자, password 컬럼 length=60 정합)
+--   ※ 직전 시드 해시($2a$10$N9qo8uLO...17lhWy)는 "password" 의 해시(Spring 문서 예시)로
+--     'Test1234!' 와 매칭되지 않던 버그였음 → 로그인 가능하도록 교체.
 -- -----------------------------------------------------------------------------
 INSERT INTO users (email, password, created_at) VALUES
-  ('test@kcs.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', CURRENT_TIMESTAMP);
+  ('test@kcs.com', '$2a$10$vF1ZTYzn1aEubV77ZBn2aepSby4E9CRQr3PJtZdDnR8XR4LnHfhMu', CURRENT_TIMESTAMP);
 
 -- -----------------------------------------------------------------------------
 -- 신용평가 리포트 28건 (user_id = 1)
